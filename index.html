@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Planner - Boost Your Productivity</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i>📚</i> Study Planner
+                </div>
+                <nav>
+                    <button class="btn btn-popup" id="exportBtn">Export Data</button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <main>
+            <!-- Sidebar with Stats -->
+            <aside class="sidebar">
+                <h2>Study Overview</h2>
+                <div class="stats-container">
+                    <div class="stat-box">
+                        <div class="stat-number" id="totalTasks">0</div>
+                        <div class="stat-label">Total Tasks</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number" id="completedTasks">0</div>
+                        <div class="stat-label">Completed</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number" id="pendingTasks">0</div>
+                        <div class="stat-label">Pending</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number" id="overdueTasks">0</div>
+                        <div class="stat-label">Overdue</div>
+                    </div>
+                </div>
+
+                <h2 style="margin-top: 30px;">Motivation</h2>
+                <div class="motivation-slider">
+                    <div class="slide active">"Education is the most powerful weapon which you can use to change the world." - Nelson Mandela</div>
+                    <div class="slide">"The beautiful thing about learning is that no one can take it away from you." - B.B. King</div>
+                    <div class="slide">"Learning never exhausts the mind." - Leonardo da Vinci</div>
+                    <div class="slide">"The more that you read, the more things you will know. The more that you learn, the more places you'll go." - Dr. Seuss</div>
+                    <div class="slide">"Education is not the filling of a pail, but the lighting of a fire." - William Butler Yeats</div>
+                </div>
+
+                <h2 style="margin-top: 30px;">Quick Actions</h2>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <button class="btn btn-popup" id="clearCompletedBtn">Clear Completed</button>
+                    <button class="btn btn-popup" id="setReminderBtn">Set Daily Reminder</button>
+                </div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <div class="main-content">
+                <!-- Task Form -->
+                <section class="task-form">
+                    <h2>Add New Study Task</h2>
+                    <form id="taskForm">
+                        <div class="form-group">
+                            <label for="taskTitle">Task Title</label>
+                            <input type="text" id="taskTitle" class="form-control" placeholder="e.g., Math Homework Chapter 5" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="taskDescription">Description</label>
+                            <textarea id="taskDescription" class="form-control" rows="2" placeholder="Details about the task..."></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="taskDueDate">Due Date</label>
+                                <input type="date" id="taskDueDate" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="taskPriority">Priority</label>
+                                <select id="taskPriority" class="form-control">
+                                    <option value="low">Low</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="high">High</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="taskEstimatedTime">Estimated Time (hours)</label>
+                            <input type="number" id="taskEstimatedTime" class="form-control" min="0.5" step="0.5" value="1">
+                        </div>
+                        <button type="submit" class="btn btn-block btn-popup">Add Task</button>
+                    </form>
+                </section>
+
+                <!-- Task List -->
+                <section class="task-list">
+                    <div class="task-list-header">
+                        <h2>Your Study Tasks</h2>
+                        <div class="filter-section">
+                            <select id="filterPriority" class="filter-control">
+                                <option value="all">All Priorities</option>
+                                <option value="high">High</option>
+                                <option value="medium">Medium</option>
+                                <option value="low">Low</option>
+                            </select>
+                            <select id="filterStatus" class="filter-control">
+                                <option value="all">All Tasks</option>
+                                <option value="completed">Completed</option>
+                                <option value="pending">Pending</option>
+                                <option value="overdue">Overdue</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="tasksContainer">
+                        <!-- Tasks will be dynamically added here -->
+                    </div>
+                </section>
+
+                <!-- Timeline -->
+                <section class="timeline-container">
+                    <h2>Study Timeline</h2>
+                    <div class="timeline" id="timeline">
+                        <!-- Timeline days will be dynamically added here -->
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Edit Task Modal -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Task</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="editForm">
+                <input type="hidden" id="editTaskId">
+                <div class="form-group">
+                    <label for="editTaskTitle">Task Title</label>
+                    <input type="text" id="editTaskTitle" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="editTaskDescription">Description</label>
+                    <textarea id="editTaskDescription" class="form-control" rows="2"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editTaskDueDate">Due Date</label>
+                        <input type="date" id="editTaskDueDate" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editTaskPriority">Priority</label>
+                        <select id="editTaskPriority" class="form-control">
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="editTaskEstimatedTime">Estimated Time (hours)</label>
+                    <input type="number" id="editTaskEstimatedTime" class="form-control" min="0.5" step="0.5" value="1">
+                </div>
+                <button type="submit" class="btn btn-block">Update Task</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

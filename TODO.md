@@ -1,0 +1,4 @@
+- [x] Update renderTimeline() in script.js to add priority-based classes to timeline-day elements
+- [x] Update style.css to add color styles for priority classes and today highlight
+- [x] Test the changes by opening index.html in browser
+- [x] Fill light blue colors in all study timeline date boxes for more interactivity
